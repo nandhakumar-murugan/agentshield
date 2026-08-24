@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentShield | Enterprise AI Agent Security Guardian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0b0f19; color: #e2e8f0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .glass-panel { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glow-blue { box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.3); }
+        .glow-red { box-shadow: 0 0 25px -5px rgba(239, 68, 68, 0.3); }
+        .glow-green { box-shadow: 0 0 25px -5px rgba(34, 197, 94, 0.3); }
+    </style>
+</head>
+<body class="min-h-screen p-6">
+    <!-- Header -->
+    <header class="max-w-7xl mx-auto flex items-center justify-between pb-6 border-b border-gray-800">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg">
+                <i class="fas fa-shield-alt text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                    AgentShield <span class="text-xs px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 border border-blue-700">Enterprise AI Security Fleet</span>
+                </h1>
+                <p class="text-xs text-gray-400">Autonomous Zero-Trust & Model Armor Layer for Google Cloud & Gemini</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button onclick="unquarantineAll()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700 transition flex items-center gap-1.5">
+                <i class="fas fa-undo"></i> Reset Fleet
+            </button>
+            <button onclick="exportAuditLog()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold rounded-lg border border-gray-700 transition flex items-center gap-1.5">
+                <i class="fas fa-download"></i> Export Audit (JSON)
+            </button>
+            <button onclick="runAllScenarios()" class="px-4 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold rounded-lg shadow-md transition flex items-center gap-2">
+                <i class="fas fa-play"></i> Run Live Attack Suite
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+        <!-- Left: Fleet Status, Attack Simulator & Custom Injection Form -->
+        <div class="space-y-6">
+            <!-- Fleet Status -->
+            <div class="glass-panel rounded-xl p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                        <i class="fas fa-users-cog text-blue-400"></i> Managed Fleet Agents
+                    </h2>
+                    <span class="text-[10px] text-gray-500 font-mono">Zero-Trust Active</span>
+                </div>
+                <div id="fleet-agents" class="space-y-3"></div>
+            </div>
+
+            <!-- Attack Simulator Pre-sets -->
+            <div class="glass-panel rounded-xl p-5">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-4 flex items-center gap-2">
+                    <i class="fas fa-bug text-red-400"></i> Preset Attack Vectors
+                </h2>
+                <div id="scenarios-list" class="space-y-2"></div>
+            </div>
+
+            <!-- Custom Attack Payload Injector -->
+            <div class="glass-panel rounded-xl p-5">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
+                    <i class="fas fa-terminal text-yellow-400"></i> Custom Prompt / Tool Injector
+                </h2>
+                <div class="space-y-3 text-xs">
+                    <div>
+                        <label class="text-gray-400 block mb-1">Target Agent</label>
+                        <select id="custom-agent" class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-gray-200">
+                            <option value="agent-finance-01">Fleet Finance Agent (agent-finance-01)</option>
+                            <option value="agent-hr-01">Fleet HR Agent (agent-hr-01)</option>
+                            <option value="agent-it-01">Fleet IT Ops Agent (agent-it-01)</option>
+                            <option value="agent-unregistered-99">Untrusted Rogue Agent (unregistered)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-gray-400 block mb-1">Target Tool</label>
+                        <input id="custom-tool" type="text" value="query_system_logs" class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-gray-200" placeholder="e.g. query_payroll, restart_service">
+                    </div>
+                    <div>
+                        <label class="text-gray-400 block mb-1">Prompt Context / Indirect Injection</label>
+                        <textarea id="custom-context" rows="2" class="w-full bg-gray-950 border border-gray-800 rounded p-2 text-gray-200" placeholder="Type prompt or injection payload..."></textarea>
+                    </div>
+                    <button onclick="injectCustomAttack()" class="w-full py-2 bg-red-600/80 hover:bg-red-600 text-white font-semibold rounded transition flex items-center justify-center gap-2">
+                        <i class="fas fa-bolt"></i> Send Custom Request
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle & Right: Real-time Telemetry, Inspection & Audit -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Inspection Result Card -->
+            <div id="latest-decision" class="glass-panel rounded-xl p-6 glow-blue transition-all">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                        <i class="fas fa-microchip text-indigo-400"></i> Autonomous Decision Engine
+                    </h2>
+                    <span id="decision-badge" class="px-3 py-1 rounded text-xs font-bold bg-gray-800 text-gray-400">STANDBY</span>
+                </div>
+                <div id="decision-details" class="space-y-3 text-sm">
+                    <p class="text-gray-400 italic">Select an attack scenario or inject a custom prompt to observe AgentShield defense in real-time.</p>
+                </div>
+            </div>
+
+            <!-- AuditChain Log Stream -->
+            <div class="glass-panel rounded-xl p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                        <i class="fas fa-link text-green-400"></i> AuditChain Immutable Ledger
+                    </h2>
+                    <span class="text-xs text-green-400 font-mono flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-green-400"></span> SHA-256 Chain Integrity Verified
+                    </span>
+                </div>
+                <div class="overflow-x-auto max-h-64 overflow-y-auto">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead class="bg-gray-900/80 text-gray-400 uppercase sticky top-0">
+                            <tr>
+                                <th class="p-2.5">Time</th>
+                                <th class="p-2.5">Agent</th>
+                                <th class="p-2.5">Tool</th>
+                                <th class="p-2.5">Risk</th>
+                                <th class="p-2.5">Decision</th>
+                                <th class="p-2.5">Event Hash</th>
+                            </tr>
+                        </thead>
+                        <tbody id="audit-table-body" class="divide-y divide-gray-800"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Gemini Incident Narrator -->
+            <div class="glass-panel rounded-xl p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-400 flex items-center gap-2">
+                        <i class="fas fa-robot text-purple-400"></i> Gemini Automated SOC Incident Narrator
+                    </h2>
+                    <span class="text-[10px] text-purple-400 bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800">Gemini 2.5/3.5 Flash</span>
+                </div>
+                <div id="narrator-output" class="bg-gray-950/60 p-4 rounded-lg text-xs text-gray-300 font-mono whitespace-pre-wrap border border-gray-800 max-h-56 overflow-y-auto">
+AgentShield SOC Narrator active. Analyzing agent fleet security events and preparing ISO 27001 / SOC 2 compliance storylines...
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function fetchStatus() {
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+                renderFleet(data.agents);
+                renderScenarios(data.scenarios);
+                renderAuditChain(data.recent_audit_events);
+            } catch (e) {
+                console.error("Fetch error:", e);
+            }
+        }
+
+        function renderFleet(agents) {
+            const container = document.getElementById('fleet-agents');
+            container.innerHTML = agents.map(a => `
+                <div class="p-3 rounded-lg bg-gray-900/60 border ${a.is_quarantined ? 'border-red-600 bg-red-950/20' : 'border-gray-800'} flex items-center justify-between">
+                    <div>
+                        <div class="font-semibold text-xs text-white">${a.name}</div>
+                        <div class="text-[10px] text-gray-400">${a.agent_id} ? Role: ${a.role}</div>
+                    </div>
+                    <span class="px-2 py-0.5 text-[10px] font-bold rounded ${a.is_quarantined ? 'bg-red-600 text-white' : 'bg-green-900/60 text-green-300 border border-green-700'}">
+                        ${a.is_quarantined ? 'QUARANTINED' : 'ACTIVE'}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        function renderScenarios(scenarios) {
+            const container = document.getElementById('scenarios-list');
+            container.innerHTML = scenarios.map(s => `
+                <button onclick="runScenario('${s.id}')" class="w-full text-left p-2.5 rounded bg-gray-900/50 hover:bg-gray-800 border border-gray-800 hover:border-blue-500 transition text-xs flex flex-col gap-1">
+                    <div class="font-semibold text-gray-200">${s.name}</div>
+                    <div class="text-[10px] text-gray-400">${s.description}</div>
+                </button>
+            `).join('');
+        }
+
+        function renderAuditChain(events) {
+            const tbody = document.getElementById('audit-table-body');
+            tbody.innerHTML = events.map(e => `
+                <tr class="hover:bg-gray-900/50">
+                    <td class="p-2.5 text-gray-400">${new Date(e.timestamp).toLocaleTimeString()}</td>
+                    <td class="p-2.5 text-white font-semibold">${e.agent_id}</td>
+                    <td class="p-2.5 text-blue-400">${e.target_tool}</td>
+                    <td class="p-2.5"><span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${getRiskBadge(e.risk_level)}">${e.risk_level}</span></td>
+                    <td class="p-2.5"><span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${getDecisionBadge(e.decision)}">${e.decision}</span></td>
+                    <td class="p-2.5 text-gray-500 text-[10px]">${e.event_hash ? e.event_hash.substring(0, 12) + '...' : '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function getRiskBadge(risk) {
+            if (risk === 'CRITICAL') return 'bg-red-900/60 text-red-300 border border-red-700';
+            if (risk === 'HIGH') return 'bg-orange-900/60 text-orange-300 border border-orange-700';
+            if (risk === 'MEDIUM') return 'bg-yellow-900/60 text-yellow-300 border border-yellow-700';
+            return 'bg-green-900/60 text-green-300 border border-green-700';
+        }
+
+        function getDecisionBadge(dec) {
+            if (dec === 'BLOCK' || dec === 'QUARANTINE') return 'bg-red-600 text-white';
+            if (dec === 'REQUIRE_APPROVAL') return 'bg-yellow-500 text-black';
+            return 'bg-green-600 text-white';
+        }
+
+        async function runScenario(scenarioId) {
+            try {
+                const res = await fetch(`/api/scenario/${scenarioId}`, { method: 'POST' });
+                const data = await res.json();
+                renderDecision(data);
+                fetchStatus();
+            } catch (e) {
+                console.error("Run scenario error:", e);
+            }
+        }
+
+        async function runAllScenarios() {
+            try {
+                const res = await fetch('/api/run_all_scenarios', { method: 'POST' });
+                const data = await res.json();
+                fetchStatus();
+            } catch (e) {
+                console.error("Run all scenarios error:", e);
+            }
+        }
+
+        async function unquarantineAll() {
+            try {
+                await fetch('/api/unquarantine_all', { method: 'POST' });
+                fetchStatus();
+            } catch (e) {
+                console.error("Unquarantine error:", e);
+            }
+        }
+
+        async function exportAuditLog() {
+            window.open('/api/export_audit', '_blank');
+        }
+
+        async function injectCustomAttack() {
+            const agent_id = document.getElementById('custom-agent').value;
+            const tool = document.getElementById('custom-tool').value;
+            const context = document.getElementById('custom-context').value;
+
+            try {
+                const res = await fetch('/api/custom_request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        agent_id: agent_id,
+                        tool: tool,
+                        prompt_context: context,
+                        parameters: { "custom_input": "payload" }
+                    })
+                });
+                const data = await res.json();
+                renderDecision(data);
+                fetchStatus();
+            } catch (e) {
+                console.error("Custom attack error:", e);
+            }
+        }
+
+        function renderDecision(data) {
+            const card = document.getElementById('latest-decision');
+            const badge = document.getElementById('decision-badge');
+            const details = document.getElementById('decision-details');
+            const narrator = document.getElementById('narrator-output');
+
+            const dec = data.inspection.decision;
+            badge.innerText = dec;
+            badge.className = `px-3 py-1 rounded text-xs font-bold ${getDecisionBadge(dec)}`;
+
+            card.className = `glass-panel rounded-xl p-6 transition-all ${dec === 'ALLOW' ? 'glow-green' : 'glow-red'}`;
+
+            details.innerHTML = `
+                <div class="grid grid-cols-2 gap-3 text-xs bg-gray-950/60 p-3 rounded border border-gray-800">
+                    <div><span class="text-gray-400">Agent:</span> <strong class="text-white">${data.scenario.agent_id}</strong></div>
+                    <div><span class="text-gray-400">Target Tool:</span> <strong class="text-blue-400">${data.scenario.tool}</strong></div>
+                    <div><span class="text-gray-400">Zero-Trust Token:</span> <span class="${data.inspection.identity_valid ? 'text-green-400' : 'text-red-400'}">${data.inspection.identity_reason}</span></div>
+                    <div><span class="text-gray-400">Model Armor:</span> <span class="${data.inspection.prompt_injection_detected ? 'text-red-400 font-bold' : 'text-green-400'}">${data.inspection.prompt_injection_detected ? 'INJECTION DETECTED' : 'CLEAN'}</span></div>
+                </div>
+                <div class="text-xs text-gray-300 mt-2"><strong>Reasoning:</strong> ${data.inspection.reasoning}</div>
+            `;
+
+            if (data.incident_narrative) {
+                narrator.innerText = data.incident_narrative;
+            }
+        }
+
+        fetchStatus();
+        setInterval(fetchStatus, 4000);
+    </script>
+</body>
+</html>
