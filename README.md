@@ -51,7 +51,7 @@ Identity        DLP & PII        & RBAC
 ### 2. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/your-repo/agentshield.git
+git clone https://github.com/nandhakumar-murugan/agentshield.git
 cd agentshield
 
 # Install dependencies

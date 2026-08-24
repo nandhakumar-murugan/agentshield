@@ -14,7 +14,7 @@ We built AgentShield to solve this:
 
 Built with **Gemini 2.5/3.5**, **Google GenAI SDK**, and deployed on **Google Cloud Run**.
 
-Check out the demo and code here: [Your GitHub Repo / Devpost Link]
+Check out the demo and code here: https://github.com/nandhakumar-murugan/agentshield
 
 #AllThingsAgenticHackathon #GoogleCloud #Gemini #AIAgents #Cybersecurity #ZeroTrust #Devpost
 

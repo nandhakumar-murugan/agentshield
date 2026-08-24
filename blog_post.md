@@ -72,7 +72,7 @@ We tested AgentShield against 5 enterprise attack and compliance scenarios:
 ---
 
 ## Try It Out
-- **GitHub Repository:** [Your GitHub Link]
+- **GitHub Repository:** https://github.com/nandhakumar-murugan/agentshield
 - **Live Demo:** [Your Google Cloud Run URL]
 - **Hackathon Entry:** All Things Agentic Hackathon (Devpost)
 
