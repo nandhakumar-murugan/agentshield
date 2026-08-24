@@ -1,25 +1,29 @@
-"""AgentShield: FastAPI Server & Cloud Run Entrypoint."""
+"""AgentShield: Enterprise Production Server & Google Cloud Run Entrypoint."""
 import os
 from dotenv import load_dotenv
 load_dotenv()
+
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse
+from core.database import EnterpriseDatabase
+from core.gateway import AgentGateway
 from core.identity import IdentityBroker
+from core.memory_bank import MemoryBank
 from core.model_armor import ModelArmor
 from core.schemas import AgentIdentity, AgentRole, RiskLevel, ToolExecutionRequest
 from core.shield import AgentShield
-from core.memory_bank import MemoryBank
-from core.gateway import AgentGateway
 from core.telemetry_otel import OTelTracer
 from fleet.finance_agent import FinanceAgent
 from fleet.hr_agent import HRAgent
 from fleet.it_ops_agent import ITOpsAgent
 from fleet.chat_orchestrator import FleetChatOrchestrator
+from fleet.enterprise_workflows import EnterpriseWorkflowEngine
 from telemetry.audit_chain import AuditChain
 from telemetry.narrator import IncidentNarrator
 from adversary.attack_suite import get_demo_scenarios
 
-# Core Security Kernel
+# Core Persistence & Security Mesh
+db = EnterpriseDatabase()
 identity_broker = IdentityBroker()
 model_armor = ModelArmor()
 shield = AgentShield(identity_broker, model_armor)
@@ -29,10 +33,10 @@ gateway = AgentGateway(shield, rate_limit_per_min=60)
 audit_chain = AuditChain()
 narrator = IncidentNarrator()
 
-# Enterprise Agents
-finance_agent = FinanceAgent(shield, identity_broker)
-hr_agent = HRAgent(shield, identity_broker)
-it_ops_agent = ITOpsAgent(shield, identity_broker)
+# Enterprise Multi-Agent Fleet with Live Database Execution
+finance_agent = FinanceAgent(shield, identity_broker, db=db)
+hr_agent = HRAgent(shield, identity_broker, db=db)
+it_ops_agent = ITOpsAgent(shield, identity_broker, db=db)
 
 fleet_map = {
     finance_agent.agent_id: finance_agent,
@@ -40,24 +44,25 @@ fleet_map = {
     it_ops_agent.agent_id: it_ops_agent,
 }
 
-# Conversational Orchestrator
-chat_orchestrator = FleetChatOrchestrator(shield, memory_bank, otel_tracer, fleet_map)
+# Conversational Reasoning & Multi-Agent Orchestration
+chat_orchestrator = FleetChatOrchestrator(shield, memory_bank, otel_tracer, fleet_map, db=db)
+workflow_engine = EnterpriseWorkflowEngine(shield, otel_tracer, audit_chain, fleet_map)
 
-# Pre-seed sample memory bank entries
+# Pre-seed realistic Memory Bank entries
 memory_bank.store_memory(
     finance_agent.agent_id, "init-session", "Approved Q2 vendor budget and established $50k invoice approval ceiling."
 )
 memory_bank.store_memory(
-    hr_agent.agent_id, "init-session", "Completed annual review cycle for Cloud Architecture team (42 engineers)."
+    hr_agent.agent_id, "init-session", "Completed annual review cycle for Cloud AI team (Dr. Elena Rostova, Marcus Chen)."
 )
 memory_bank.store_memory(
-    it_ops_agent.agent_id, "init-session", "Maintained 99.99% uptime on us-central1 Kubernetes cluster."
+    it_ops_agent.agent_id, "init-session", "Maintained 99.99% uptime on production-fleet-alpha GKE cluster across us-central1."
 )
 
 app = FastAPI(
-    title="AgentShield Autonomous Security Guardian",
-    description="Zero-Trust & Model Armor Security Mesh for Enterprise Agent Fleets",
-    version="2.0.0",
+    title="AgentShield Enterprise AI Security Mesh",
+    description="Autonomous Zero-Trust & Model Armor Governance Platform for Enterprise Agent Fleets",
+    version="2.5.0",
 )
 
 
@@ -67,7 +72,7 @@ async def get_dashboard():
     if os.path.exists(static_file):
         with open(static_file, "r", encoding="utf-8") as f:
             return f.read()
-    return "<h1>AgentShield Active</h1>"
+    return "<h1>AgentShield Online</h1>"
 
 
 @app.get("/api/status")
@@ -84,9 +89,11 @@ async def get_status():
     ]
     return {
         "status": "ONLINE",
-        "service": "AgentShield Autonomous Security Guardian",
+        "service": "AgentShield Autonomous Security Mesh",
         "cloud_provider": "Google Cloud Platform",
         "cloud_service": "Cloud Run",
+        "database": "Enterprise SQLite Production Store",
+        "ai_model": os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
         "agents": agents,
         "scenarios": get_demo_scenarios(),
         "recent_audit_events": [e.model_dump() for e in audit_chain.get_recent_events(15)],
@@ -120,7 +127,7 @@ async def execute_scenario(scenario_id: str):
 
     trace_id = otel_tracer.start_trace(agent_id, scenario["tool"])
     allowed, inspection_dict = gateway.route_and_enforce(req)
-    
+
     from core.schemas import SecurityInspectionResult
     inspection = SecurityInspectionResult(**inspection_dict)
     audit_event = audit_chain.record_event(req, inspection)
@@ -154,6 +161,19 @@ async def chat_with_agent(payload: dict):
         raise HTTPException(status_code=400, detail="Message cannot be empty")
 
     result = chat_orchestrator.process_agent_chat(agent_id, message, session_id)
+    return result
+
+
+@app.post("/api/workflow/onboarding")
+async def trigger_cross_department_onboarding(payload: dict):
+    candidate = payload.get("candidate_name", "Dr. Alexander Vance")
+    department = payload.get("department", "Cloud AI")
+    role_title = payload.get("role_title", "Senior AI Governance Specialist")
+    salary = int(payload.get("salary", 175000))
+
+    result = workflow_engine.execute_cross_department_onboarding(
+        candidate_name=candidate, department=department, role_title=role_title, salary=salary
+    )
     return result
 
 

@@ -56,6 +56,9 @@
         <button onclick="switchTab('otel')" id="tab-btn-otel" class="tab-btn py-3 text-gray-400 hover:text-white flex items-center gap-2">
             <i class="fas fa-project-diagram"></i> OpenTelemetry Traces
         </button>
+        <button onclick="switchTab('workflow')" id="tab-btn-workflow" class="tab-btn py-3 text-gray-400 hover:text-white flex items-center gap-2">
+            <i class="fas fa-network-wired"></i> Cross-Agent Workflows
+        </button>
     </div>
 
     <!-- TAB 1: GUARDIAN & ATTACK SUITE -->
@@ -241,6 +244,27 @@ AgentShield SOC Narrator active. Analyzing agent fleet security events and prepa
         </div>
     </main>
 
+    
+    <!-- TAB 5: CROSS-AGENT MULTI-STEP WORKFLOWS -->
+    <main id="tab-content-workflow" class="max-w-7xl mx-auto mt-6 hidden">
+        <div class="glass-panel rounded-xl p-6">
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-800">
+                <div>
+                    <h2 class="text-sm font-semibold uppercase tracking-wider text-gray-300 flex items-center gap-2">
+                        <i class="fas fa-network-wired text-indigo-400"></i> Autonomous Multi-Agent Workflow Orchestration
+                    </h2>
+                    <p class="text-xs text-gray-500">Zero-Trust Inter-Agent Delegation (HR Agent -> IT Ops Agent -> Finance Agent)</p>
+                </div>
+                <button onclick="triggerOnboardingWorkflow()" class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold text-xs rounded-lg shadow transition flex items-center gap-2">
+                    <i class="fas fa-play"></i> Run 3-Agent Onboarding Workflow
+                </button>
+            </div>
+            <div id="workflow-output" class="space-y-4 font-mono text-xs">
+                <p class="text-gray-400 italic">Click "Run 3-Agent Onboarding Workflow" to observe the autonomous inter-agent capability token exchange and database synchronization in real time.</p>
+            </div>
+        </div>
+    </main>
+
     <!-- TAB 4: OPENTELEMETRY TRACES -->
     <main id="tab-content-otel" class="max-w-7xl mx-auto mt-6 hidden">
         <div class="glass-panel rounded-xl p-6">
@@ -272,6 +296,7 @@ AgentShield SOC Narrator active. Analyzing agent fleet security events and prepa
             document.getElementById('tab-content-chat').classList.add('hidden');
             document.getElementById('tab-content-memory').classList.add('hidden');
             document.getElementById('tab-content-otel').classList.add('hidden');
+            document.getElementById('tab-content-workflow').classList.add('hidden');
 
             document.getElementById('tab-content-' + tabId).classList.remove('hidden');
 
@@ -348,7 +373,52 @@ AgentShield SOC Narrator active. Analyzing agent fleet security events and prepa
                 const res = await fetch(`/api/scenario/${scenarioId}`, { method: 'POST' });
                 const data = await res.json();
                 renderDecision(data);
+                
+        async function triggerOnboardingWorkflow() {
+            const container = document.getElementById('workflow-output');
+            container.innerHTML = `<div class="p-4 bg-indigo-950/40 rounded border border-indigo-900/60 text-indigo-300">? Orchestrating Cross-Department Workflow across Enterprise Fleet...</div>`;
+            try {
+                const res = await fetch('/api/workflow/onboarding', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidate_name: 'Dr. Alexander Vance',
+                        department: 'Cloud AI',
+                        role_title: 'Senior AI Governance Specialist',
+                        salary: 175000
+                    })
+                });
+                const data = await res.json();
+                container.innerHTML = `
+                    <div class="p-4 bg-gray-950 rounded-lg border border-indigo-500/40 space-y-3">
+                        <div class="flex items-center justify-between text-xs font-bold">
+                            <span class="text-indigo-400">${data.workflow_name}</span>
+                            <span class="px-2 py-0.5 bg-green-900/60 text-green-300 border border-green-700 rounded text-[10px]">ALL ZERO-TRUST CHECKS PASSED</span>
+                        </div>
+                        <div class="text-[11px] text-gray-400">Trace ID: <span class="font-mono text-gray-200">${data.trace_id}</span> ? Total Agents Coordinated: <span class="text-white">${data.total_agents_coordinated}</span></div>
+                        <div class="space-y-2">
+                            ${data.steps.map(s => `
+                                <div class="p-3 bg-gray-900/80 rounded border border-gray-800 flex items-center justify-between">
+                                    <div>
+                                        <div class="font-bold text-white text-xs">Step ${s.step}: ${s.agent}</div>
+                                        <div class="text-[10px] text-gray-400">Target Tool: <code class="text-blue-400">${s.tool}</code></div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-600 text-white">${s.decision}</span>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-900/60 text-blue-300 border border-blue-700">${s.status}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
                 fetchStatus();
+            } catch (e) {
+                console.error("Workflow error:", e);
+            }
+        }
+
+        fetchStatus();
             } catch (e) {
                 console.error("Run scenario error:", e);
             }
@@ -358,7 +428,52 @@ AgentShield SOC Narrator active. Analyzing agent fleet security events and prepa
             try {
                 const res = await fetch('/api/run_all_scenarios', { method: 'POST' });
                 const data = await res.json();
+                
+        async function triggerOnboardingWorkflow() {
+            const container = document.getElementById('workflow-output');
+            container.innerHTML = `<div class="p-4 bg-indigo-950/40 rounded border border-indigo-900/60 text-indigo-300">? Orchestrating Cross-Department Workflow across Enterprise Fleet...</div>`;
+            try {
+                const res = await fetch('/api/workflow/onboarding', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidate_name: 'Dr. Alexander Vance',
+                        department: 'Cloud AI',
+                        role_title: 'Senior AI Governance Specialist',
+                        salary: 175000
+                    })
+                });
+                const data = await res.json();
+                container.innerHTML = `
+                    <div class="p-4 bg-gray-950 rounded-lg border border-indigo-500/40 space-y-3">
+                        <div class="flex items-center justify-between text-xs font-bold">
+                            <span class="text-indigo-400">${data.workflow_name}</span>
+                            <span class="px-2 py-0.5 bg-green-900/60 text-green-300 border border-green-700 rounded text-[10px]">ALL ZERO-TRUST CHECKS PASSED</span>
+                        </div>
+                        <div class="text-[11px] text-gray-400">Trace ID: <span class="font-mono text-gray-200">${data.trace_id}</span> ? Total Agents Coordinated: <span class="text-white">${data.total_agents_coordinated}</span></div>
+                        <div class="space-y-2">
+                            ${data.steps.map(s => `
+                                <div class="p-3 bg-gray-900/80 rounded border border-gray-800 flex items-center justify-between">
+                                    <div>
+                                        <div class="font-bold text-white text-xs">Step ${s.step}: ${s.agent}</div>
+                                        <div class="text-[10px] text-gray-400">Target Tool: <code class="text-blue-400">${s.tool}</code></div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-600 text-white">${s.decision}</span>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-900/60 text-blue-300 border border-blue-700">${s.status}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
                 fetchStatus();
+            } catch (e) {
+                console.error("Workflow error:", e);
+            }
+        }
+
+        fetchStatus();
             } catch (e) {
                 console.error("Run all scenarios error:", e);
             }
@@ -367,7 +482,52 @@ AgentShield SOC Narrator active. Analyzing agent fleet security events and prepa
         async function unquarantineAll() {
             try {
                 await fetch('/api/unquarantine_all', { method: 'POST' });
+                
+        async function triggerOnboardingWorkflow() {
+            const container = document.getElementById('workflow-output');
+            container.innerHTML = `<div class="p-4 bg-indigo-950/40 rounded border border-indigo-900/60 text-indigo-300">? Orchestrating Cross-Department Workflow across Enterprise Fleet...</div>`;
+            try {
+                const res = await fetch('/api/workflow/onboarding', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidate_name: 'Dr. Alexander Vance',
+                        department: 'Cloud AI',
+                        role_title: 'Senior AI Governance Specialist',
+                        salary: 175000
+                    })
+                });
+                const data = await res.json();
+                container.innerHTML = `
+                    <div class="p-4 bg-gray-950 rounded-lg border border-indigo-500/40 space-y-3">
+                        <div class="flex items-center justify-between text-xs font-bold">
+                            <span class="text-indigo-400">${data.workflow_name}</span>
+                            <span class="px-2 py-0.5 bg-green-900/60 text-green-300 border border-green-700 rounded text-[10px]">ALL ZERO-TRUST CHECKS PASSED</span>
+                        </div>
+                        <div class="text-[11px] text-gray-400">Trace ID: <span class="font-mono text-gray-200">${data.trace_id}</span> ? Total Agents Coordinated: <span class="text-white">${data.total_agents_coordinated}</span></div>
+                        <div class="space-y-2">
+                            ${data.steps.map(s => `
+                                <div class="p-3 bg-gray-900/80 rounded border border-gray-800 flex items-center justify-between">
+                                    <div>
+                                        <div class="font-bold text-white text-xs">Step ${s.step}: ${s.agent}</div>
+                                        <div class="text-[10px] text-gray-400">Target Tool: <code class="text-blue-400">${s.tool}</code></div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-600 text-white">${s.decision}</span>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-900/60 text-blue-300 border border-blue-700">${s.status}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
                 fetchStatus();
+            } catch (e) {
+                console.error("Workflow error:", e);
+            }
+        }
+
+        fetchStatus();
             } catch (e) {
                 console.error("Unquarantine error:", e);
             }
@@ -395,7 +555,52 @@ AgentShield SOC Narrator active. Analyzing agent fleet security events and prepa
                 });
                 const data = await res.json();
                 renderDecision(data);
+                
+        async function triggerOnboardingWorkflow() {
+            const container = document.getElementById('workflow-output');
+            container.innerHTML = `<div class="p-4 bg-indigo-950/40 rounded border border-indigo-900/60 text-indigo-300">? Orchestrating Cross-Department Workflow across Enterprise Fleet...</div>`;
+            try {
+                const res = await fetch('/api/workflow/onboarding', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidate_name: 'Dr. Alexander Vance',
+                        department: 'Cloud AI',
+                        role_title: 'Senior AI Governance Specialist',
+                        salary: 175000
+                    })
+                });
+                const data = await res.json();
+                container.innerHTML = `
+                    <div class="p-4 bg-gray-950 rounded-lg border border-indigo-500/40 space-y-3">
+                        <div class="flex items-center justify-between text-xs font-bold">
+                            <span class="text-indigo-400">${data.workflow_name}</span>
+                            <span class="px-2 py-0.5 bg-green-900/60 text-green-300 border border-green-700 rounded text-[10px]">ALL ZERO-TRUST CHECKS PASSED</span>
+                        </div>
+                        <div class="text-[11px] text-gray-400">Trace ID: <span class="font-mono text-gray-200">${data.trace_id}</span> ? Total Agents Coordinated: <span class="text-white">${data.total_agents_coordinated}</span></div>
+                        <div class="space-y-2">
+                            ${data.steps.map(s => `
+                                <div class="p-3 bg-gray-900/80 rounded border border-gray-800 flex items-center justify-between">
+                                    <div>
+                                        <div class="font-bold text-white text-xs">Step ${s.step}: ${s.agent}</div>
+                                        <div class="text-[10px] text-gray-400">Target Tool: <code class="text-blue-400">${s.tool}</code></div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-600 text-white">${s.decision}</span>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-900/60 text-blue-300 border border-blue-700">${s.status}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
                 fetchStatus();
+            } catch (e) {
+                console.error("Workflow error:", e);
+            }
+        }
+
+        fetchStatus();
             } catch (e) {
                 console.error("Custom attack error:", e);
             }
@@ -447,7 +652,52 @@ AgentShield SOC Narrator active. Analyzing agent fleet security events and prepa
                     </div>
                 `;
                 chatBox.scrollTop = chatBox.scrollHeight;
+                
+        async function triggerOnboardingWorkflow() {
+            const container = document.getElementById('workflow-output');
+            container.innerHTML = `<div class="p-4 bg-indigo-950/40 rounded border border-indigo-900/60 text-indigo-300">? Orchestrating Cross-Department Workflow across Enterprise Fleet...</div>`;
+            try {
+                const res = await fetch('/api/workflow/onboarding', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidate_name: 'Dr. Alexander Vance',
+                        department: 'Cloud AI',
+                        role_title: 'Senior AI Governance Specialist',
+                        salary: 175000
+                    })
+                });
+                const data = await res.json();
+                container.innerHTML = `
+                    <div class="p-4 bg-gray-950 rounded-lg border border-indigo-500/40 space-y-3">
+                        <div class="flex items-center justify-between text-xs font-bold">
+                            <span class="text-indigo-400">${data.workflow_name}</span>
+                            <span class="px-2 py-0.5 bg-green-900/60 text-green-300 border border-green-700 rounded text-[10px]">ALL ZERO-TRUST CHECKS PASSED</span>
+                        </div>
+                        <div class="text-[11px] text-gray-400">Trace ID: <span class="font-mono text-gray-200">${data.trace_id}</span> ? Total Agents Coordinated: <span class="text-white">${data.total_agents_coordinated}</span></div>
+                        <div class="space-y-2">
+                            ${data.steps.map(s => `
+                                <div class="p-3 bg-gray-900/80 rounded border border-gray-800 flex items-center justify-between">
+                                    <div>
+                                        <div class="font-bold text-white text-xs">Step ${s.step}: ${s.agent}</div>
+                                        <div class="text-[10px] text-gray-400">Target Tool: <code class="text-blue-400">${s.tool}</code></div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-600 text-white">${s.decision}</span>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-900/60 text-blue-300 border border-blue-700">${s.status}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
                 fetchStatus();
+            } catch (e) {
+                console.error("Workflow error:", e);
+            }
+        }
+
+        fetchStatus();
             } catch (e) {
                 console.error("Chat error:", e);
             }
@@ -531,6 +781,51 @@ AgentShield SOC Narrator active. Analyzing agent fleet security events and prepa
 
             if (data.incident_narrative) {
                 narrator.innerText = data.incident_narrative;
+            }
+        }
+
+        
+        async function triggerOnboardingWorkflow() {
+            const container = document.getElementById('workflow-output');
+            container.innerHTML = `<div class="p-4 bg-indigo-950/40 rounded border border-indigo-900/60 text-indigo-300">? Orchestrating Cross-Department Workflow across Enterprise Fleet...</div>`;
+            try {
+                const res = await fetch('/api/workflow/onboarding', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        candidate_name: 'Dr. Alexander Vance',
+                        department: 'Cloud AI',
+                        role_title: 'Senior AI Governance Specialist',
+                        salary: 175000
+                    })
+                });
+                const data = await res.json();
+                container.innerHTML = `
+                    <div class="p-4 bg-gray-950 rounded-lg border border-indigo-500/40 space-y-3">
+                        <div class="flex items-center justify-between text-xs font-bold">
+                            <span class="text-indigo-400">${data.workflow_name}</span>
+                            <span class="px-2 py-0.5 bg-green-900/60 text-green-300 border border-green-700 rounded text-[10px]">ALL ZERO-TRUST CHECKS PASSED</span>
+                        </div>
+                        <div class="text-[11px] text-gray-400">Trace ID: <span class="font-mono text-gray-200">${data.trace_id}</span> ? Total Agents Coordinated: <span class="text-white">${data.total_agents_coordinated}</span></div>
+                        <div class="space-y-2">
+                            ${data.steps.map(s => `
+                                <div class="p-3 bg-gray-900/80 rounded border border-gray-800 flex items-center justify-between">
+                                    <div>
+                                        <div class="font-bold text-white text-xs">Step ${s.step}: ${s.agent}</div>
+                                        <div class="text-[10px] text-gray-400">Target Tool: <code class="text-blue-400">${s.tool}</code></div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-600 text-white">${s.decision}</span>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-900/60 text-blue-300 border border-blue-700">${s.status}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                fetchStatus();
+            } catch (e) {
+                console.error("Workflow error:", e);
             }
         }
 
