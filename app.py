@@ -1,5 +1,7 @@
 """AgentShield: FastAPI Server & Cloud Run Entrypoint."""
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse
 from core.identity import IdentityBroker
