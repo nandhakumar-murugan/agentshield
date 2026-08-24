@@ -5,12 +5,13 @@ from core.schemas import AgentRole, ToolExecutionRequest
 
 
 class BaseFleetAgent:
-    def __init__(self, agent_id: str, name: str, role: AgentRole, shield, identity_broker):
+    def __init__(self, agent_id: str, name: str, role: AgentRole, shield, identity_broker, allowed_tools: list = None):
         self.agent_id = agent_id
         self.name = name
         self.role = role
         self.shield = shield
         self.identity_broker = identity_broker
+        self.allowed_tools = allowed_tools or []
         self.active_token: Optional[str] = None
 
     def acquire_capability_token(self) -> Optional[str]:
