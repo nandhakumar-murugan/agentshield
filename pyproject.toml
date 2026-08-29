@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agent-shield"
+name = "prema-agentshield"
 version = "0.1.0"
-description = "Autonomous Security & Zero-Trust Governance Guardian for Enterprise AI Agent Fleets powered by Gemini"
+description = "Autonomous Security & Zero-Trust Governance Guardian for Enterprise AI Agent Fleets by Prema AI Labs"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
