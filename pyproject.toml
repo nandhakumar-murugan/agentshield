@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-shield"
+version = "0.1.0"
+description = "Autonomous Security & Zero-Trust Governance Guardian for Enterprise AI Agent Fleets powered by Gemini"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+  { name = "Nandhakumar Murugan", email = "smnk2006@gmail.com" }
+]
+license = { text = "Apache-2.0" }
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Security",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+dependencies = [
+  "google-genai>=2.0.0",
+  "pydantic>=2.0.0",
+  "flask>=3.0.0",
+  "rich>=13.0.0",
+  "click>=8.0.0"
+]
+
+[project.scripts]
+agentshield = "cli:main"
+
+[project.urls]
+Homepage = "https://github.com/nandhakumar-murugan/agentshield"
+Issues = "https://github.com/nandhakumar-murugan/agentshield/issues"
