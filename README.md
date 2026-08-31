@@ -15,7 +15,7 @@
   <b>Protecting multi-agent enterprise fleets against indirect prompt injections, unauthorized tool abuse, privilege escalations, and sensitive PII leaks.</b>
 </p>
 
-[Live Web Dashboard](http://localhost:8080) • [Devpost Submission Guide](devpost_submission.md) • [4-Min Video Script](demo_script.md) • [Technical Blog Post](blog_post.md) • [Social Post](social_post.md)
+[Live Demo Video (YouTube)](https://youtu.be/PkJ42_Elfv4) • [Official PyPI Package](https://pypi.org/project/prema-agentshield/) • [Devpost Submission Guide](devpost_submission.md) • [4-Min Video Script](demo_script.md) • [Technical Blog Post](blog_post.md) • [Social Post](social_post.md)
 
 ---
 
