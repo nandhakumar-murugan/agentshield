@@ -6,8 +6,9 @@
 
 [![Hackathon](https://img.shields.io/badge/Google%20Hackathon-All%20Things%20Agentic-4285F4?style=for-the-badge&logo=google)](https://allthingsagentichackathon.devpost.com/)
 [![Track](https://img.shields.io/badge/Track-Fortified%20Enterprise%20Fleet-34A853?style=for-the-badge&logo=googlecloud)](https://allthingsagentichackathon.devpost.com/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22259022.svg)](https://doi.org/10.5281/zenodo.22259022)
 [![PyPI](https://img.shields.io/badge/PyPI-prema--agentshield-3775A9?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/prema-agentshield/)
-[![AI Model](https://img.shields.io/badge/AI%20Models-Gemini%203.5%20%2B%20Gemma-FBBC05?style=for-the-badge&logo=googlegemini)](https://ai.google.dev/)
+[![AI Model](https://img.shields.io/badge/AI%20Models-Gemini%203.8%20%2F%203.7%20%2B%20Gemma-FBBC05?style=for-the-badge&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 [![Infrastructure](https://img.shields.io/badge/Cloud-Google%20Cloud%20Run-EA4335?style=for-the-badge&logo=googlecloud)](https://cloud.google.com/run)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
@@ -126,7 +127,7 @@ sequenceDiagram
 ### 2. Model Armor & DLP Engine (`core/model_armor.py`)
 - **Dual-Layer Evaluation:**
   1. *Zero-Latency Regex Heuristics:* Detects known jailbreak sequences and system overrides (`ignore instructions`, `<!-- system`, `base64_decode`, etc.).
-  2. *Semantic Intent Analysis:* Uses **Gemini 2.5/3.5 Flash** and Google **Gemma** open models to evaluate unstructured text for subtle indirect prompt injections.
+  2. *Semantic Intent Analysis:* Uses **Gemini 3.8 / 3.7 Flash** and Google **Gemma** open models to evaluate unstructured text for subtle indirect prompt injections.
 - **In-Flight Data Loss Prevention (DLP):** Automatically redacts sensitive identifiers (Social Security Numbers, Credit Cards, API Keys, Emails) before parameters reach backend tools:
   ```json
   // Before Sanitization

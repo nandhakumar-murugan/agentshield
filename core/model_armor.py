@@ -51,10 +51,12 @@ class ModelArmor:
             if re.search(pattern, text):
                 return True, 0.95, f"Matched malicious prompt pattern: '{pattern}'"
 
-        # Dual-Layer AI Evaluation: Primary with Gemini, Secondary Guardrail with Google Gemma
+        # Dual-Layer AI Evaluation: Primary with Gemini 3.8 / 3.7, Secondary Guardrail with Google Gemma
         if self.client:
             models_to_try = [
-                os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                os.getenv("GEMINI_MODEL", "gemini-3.8-flash"),
+                "gemini-3.7-flash",
+                "gemini-2.5-flash",
                 os.getenv("GEMMA_MODEL", "gemma-2-9b-it"),
             ]
             for model_name in models_to_try:

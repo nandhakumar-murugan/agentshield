@@ -43,7 +43,7 @@ Provide a concise 3-paragraph executive narrative:
 3. Recommended Follow-up for Security Operations
 """
                 response = self.client.models.generate_content(
-                    model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+                    model=os.getenv("GEMINI_MODEL", "gemini-3.8-flash"),
                     contents=prompt,
                 )
                 return response.text
