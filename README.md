@@ -10,13 +10,14 @@
 [![PyPI](https://img.shields.io/badge/PyPI-prema--agentshield-3775A9?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/prema-agentshield/)
 [![AI Model](https://img.shields.io/badge/AI%20Models-Gemini%203.8%20%2F%203.7%20%2B%20Gemma-FBBC05?style=for-the-badge&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 [![Infrastructure](https://img.shields.io/badge/Cloud-Google%20Cloud%20Run-EA4335?style=for-the-badge&logo=googlecloud)](https://cloud.google.com/run)
+[![Patent Application](https://img.shields.io/badge/Patent_Application-Indian_Form_2_Drafted-8E24AA?style=for-the-badge&logo=googledocs&logoColor=white)](docs/patent/Form2_Patent_Specification.md)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 <p align="center">
   <b>Protecting multi-agent enterprise fleets against indirect prompt injections, unauthorized tool abuse, privilege escalations, and sensitive PII leaks.</b>
 </p>
 
-[Demo Video](https://youtu.be/PkJ42_Elfv4) • [Live Web Dashboard](http://localhost:8080) • [Devpost Submission Guide](devpost_submission.md) • [4-Min Video Script](demo_script.md) • [Technical Blog Post](blog_post.md) • [Social Post](social_post.md)
+[Demo Video](https://youtu.be/PkJ42_Elfv4) • [Patent Specification (Form 2)](docs/patent/Form2_Patent_Specification.md) • [Live Web Dashboard](http://localhost:8080) • [Devpost Submission Guide](devpost_submission.md) • [4-Min Video Script](demo_script.md) • [Technical Blog Post](blog_post.md) • [Social Post](social_post.md)
 
 ---
 
