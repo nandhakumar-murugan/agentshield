@@ -119,3 +119,13 @@ If attestation succeeds, the dispatch is released to the OS kernel for physical 
 **A ZERO-TRUST RUNTIME GUARDRAIL SYSTEM AND METHOD FOR AUTONOMOUS MULTI-AGENT ARTIFICIAL INTELLIGENCE ENVIRONMENTS**
 
 The present invention discloses a zero-trust runtime guardrail system and method for autonomous multi-agent AI environments. Existing multi-agent networks operate on transitive trust, rendering them vulnerable to prompt injections and lateral privilege escalations. The disclosed system intercepts outbound inter-agent tool calls and system commands prior to kernel execution. An inline semantic attestation module evaluates requests against privilege boundaries and code-switched injection attacks using a low-latency model cascade. A cryptographic memory ledger validates state transitions using HMAC-SHA256 signatures, preventing memory drift and context poisoning. The invention achieves 98.4% threat mitigation with negligible latency overhead, providing robust zero-trust security for autonomous agent fleets.
+
+---
+
+### 11. LEGAL NOTICE & INVENTOR RIGHTS RESERVATION
+
+* **Lead Inventor**: Nandhakumar Murugan (NANDHAKUMAR M)
+* **Statutory Framework**: Complete Specification under The Patents Act, 1970 and The Patents Rules, 2003 (Form 2).
+* **Prior Art & International Registration**: Registered under CERN Zenodo DOI: `10.5281/zenodo.22259022` and Google Scholar.
+* **Copyright & Rights**: Copyright © 2026 Nandhakumar Murugan. All rights reserved under Section 31 of The Patents Act, 1970.
+* **Software Implementation License**: Underlying implementation code is dual-licensed under Apache License 2.0 (incorporating explicit Section 3 patent grant protections).
