@@ -2,7 +2,7 @@
 import hashlib
 import json
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
 
@@ -13,7 +13,7 @@ class OpenTelemetrySpan(BaseModel):
     parent_span_id: Optional[str] = None
     name: str
     kind: str = "INTERNAL"
-    start_time: datetime = Field(default_factory=datetime.utcnow)
+    start_time: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     end_time: Optional[datetime] = None
     attributes: Dict[str, Any] = Field(default_factory=dict)
     events: List[Dict[str, Any]] = Field(default_factory=list)
@@ -48,7 +48,7 @@ class OTelTracer:
                 span.events.append(
                     {
                         "name": name,
-                        "time": datetime.utcnow().isoformat(),
+                        "time": datetime.now(timezone.utc).isoformat(),
                         "attributes": attributes,
                     }
                 )

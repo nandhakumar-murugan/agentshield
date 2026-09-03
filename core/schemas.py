@@ -1,5 +1,5 @@
 """Data schemas for AgentShield Zero-Trust Architecture."""
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
@@ -33,7 +33,7 @@ class AgentIdentity(BaseModel):
     role: AgentRole
     allowed_tools: List[str]
     max_risk_tolerance: RiskLevel = RiskLevel.MEDIUM
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     is_active: bool = True
     is_quarantined: bool = False
 
@@ -55,7 +55,7 @@ class ToolExecutionRequest(BaseModel):
     target_tool: str
     parameters: Dict[str, Any] = Field(default_factory=dict)
     prompt_context: Optional[str] = ""
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class SecurityInspectionResult(BaseModel):
@@ -71,14 +71,24 @@ class SecurityInspectionResult(BaseModel):
     overall_risk: RiskLevel
     decision: ShieldDecision
     reasoning: str
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class ShieldResult(BaseModel):
+    request_id: str
+    decision: ShieldDecision
+    risk_level: RiskLevel
+    reasons: List[str]
+    sanitized_parameters: Dict[str, Any]
+    requires_quarantine: bool = False
+    evaluation_latency_ms: float = 0.0
 
 
 class AuditEvent(BaseModel):
     event_id: str
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     agent_id: str
-    role: str
+    role: str = "SECURITY"
     target_tool: str
     decision: ShieldDecision
     risk_level: RiskLevel

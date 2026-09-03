@@ -1,7 +1,7 @@
 """AuditChain: Cryptographically Linked Immutable Audit Ledger."""
 import hashlib
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Optional
 from core.schemas import AuditEvent, SecurityInspectionResult, ToolExecutionRequest
 
@@ -14,7 +14,7 @@ class AuditChain:
     def _genesis_block(self):
         genesis = AuditEvent(
             event_id="genesis-event-000",
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             agent_id="SYSTEM",
             role="SECURITY",
             target_tool="INIT_AGENTSHIELD",
@@ -59,7 +59,7 @@ class AuditChain:
 
         event = AuditEvent(
             event_id=f"evt-{len(self.chain):04d}",
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             agent_id=request.agent_id,
             role=inspection.identity_reason,
             target_tool=request.target_tool,

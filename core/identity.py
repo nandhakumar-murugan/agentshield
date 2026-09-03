@@ -5,7 +5,7 @@ import hmac
 import json
 import os
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Optional, Tuple
 from core.schemas import AgentIdentity, AgentRole, CapabilityToken, RiskLevel
 
@@ -69,7 +69,7 @@ class IdentityBroker:
         if not agent or not agent.is_active or agent.is_quarantined:
             return None
 
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         expires = now + timedelta(minutes=ttl_minutes)
 
         payload = {
@@ -109,7 +109,7 @@ class IdentityBroker:
 
             # Check expiration
             expires_at = datetime.fromisoformat(payload["expires_at"])
-            if datetime.utcnow() > expires_at:
+            if datetime.now(timezone.utc) > expires_at:
                 return False, "Capability token has expired", None
 
             # Check agent status

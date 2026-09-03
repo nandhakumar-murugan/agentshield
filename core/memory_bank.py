@@ -2,7 +2,7 @@
 import hashlib
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
 
@@ -30,7 +30,7 @@ class MemoryBank:
         if agent_id not in self.entries:
             self.entries[agent_id] = []
 
-        entry_id = f"mem-{hashlib.sha256((agent_id + session_id + content + str(datetime.utcnow())).encode()).hexdigest()[:12]}"
+        entry_id = f"mem-{hashlib.sha256((agent_id + session_id + content + str(datetime.now(timezone.utc))).encode()).hexdigest()[:12]}"
         entry = MemoryEntry(
             entry_id=entry_id,
             agent_id=agent_id,
@@ -38,7 +38,7 @@ class MemoryBank:
             memory_type=memory_type,
             content=content,
             metadata=metadata or {},
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             is_sanitized=True,
         )
         self.entries[agent_id].append(entry)
